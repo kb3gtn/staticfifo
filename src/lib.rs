@@ -30,14 +30,11 @@ pub enum StaticFifoError {
 
 impl<const N : usize> StaticFifoU8<N> {
 
-    // create new StaticFifoU8
-    pub fn new() -> Self {
-        Self {
-            buf : [0; N],
-            read_ptr : 0,
-            write_ptr : 0,
-            capacity : N,
-        }
+    #[inline]
+    pub fn init(&mut self) {
+        self.read_ptr = 0;
+        self.write_ptr = 0;
+        self.capacity = N;
     }
 
     #[inline]
@@ -115,13 +112,11 @@ pub struct StaticFifoU32<const N : usize> {
 impl<const N : usize> StaticFifoU32<N> {
 
     // create new StaticFifoU8
-    pub fn new() -> Self {
-        Self {
-            buf : [0; N],
-            read_ptr : 0,
-            write_ptr : 0,
-            capacity : N,
-        }
+    #[inline]
+    pub fn init(&mut self) {
+        self.read_ptr = 0;
+        self.write_ptr = 0;
+        self.capacity = N;
     }
 
     #[inline]
@@ -204,7 +199,7 @@ mod tests {
         println!("##################### FIFO FUNCTIONAL TEST U8 ######################################");
         
         // create static fifo of 16 bytes
-        let mut byte_fifo : StaticFifoU8<16> = StaticFifoU8::<16>::new();
+        let mut byte_fifo : StaticFifoU8<16> = StaticFifoU8::<16> { buf: [0;16], read_ptr: 0, write_ptr: 0, capacity: 16 };
 
 
         assert!( byte_fifo.is_empty(), "FIFO not empty at startup..");
@@ -330,7 +325,7 @@ mod tests {
         println!("##################### FIFO FUNCTIONAL TEST U32 ######################################");
 
         // create static fifo of 16 bytes
-        let mut byte_fifo : StaticFifoU32<16> = StaticFifoU32::<16>::new();
+        let mut byte_fifo : StaticFifoU32<16> = StaticFifoU32::<16> { buf: [0;16], read_ptr:0, write_ptr:0, capacity:16 };
 
 
         assert!( byte_fifo.is_empty(), "FIFO not empty at startup..");
